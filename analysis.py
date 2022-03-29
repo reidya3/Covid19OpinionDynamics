@@ -1,7 +1,6 @@
 """
  A python module that contains functions that computes the various output statistics
 """
-
 import networkx as nx
 import community as com
 from community.community_louvain import best_partition
@@ -26,13 +25,13 @@ def compute_opinions(G, opinions):
         agent_opinions = [G.nodes()[agent]["agent"].opinion for agent in G.nodes()]
         return np.mean(agent_opinions)
     else:
-        return 'opinions>2'
+        raise NotImplementedError
 
 def compute_transitivity(G):
     '''
-    Computes transitivity
+    Computes weighted transitivity
     '''  
-    return nx.transitivity(G)
+    return  nx.average_clustering(G, nodes=None, weight="trust", count_zeros=True)
 
 def compute_majority_opinions(G, num_agents):
     '''
@@ -40,9 +39,7 @@ def compute_majority_opinions(G, num_agents):
     '''    
     agent_opinions = [G.nodes()[agent]["agent"].opinion for agent in G.nodes()]
     agent_opinions = Counter(agent_opinions)
-    opinion_sizes = [agent_opinions[key] for key in agent_opinions.keys()]
-
-    difference = max(opinion_sizes)/num_agents  
+    difference = max(agent_opinions.values())/sum(agent_opinions.values())
 
     return difference
 
@@ -59,16 +56,17 @@ def compute_echo_chamber(G, echo_limit):
 
     # calculate cliques
     cliques = list(nx.enumerate_all_cliques(hidden))
-
     # select cliques where size >= 3
     large_cliques = [[G.nodes()[node]["agent"].opinion for node in clique] for clique in cliques if len(clique)>2]
+    #should have all the same opinion 
     echo_chambers = [echo for echo in large_cliques if len(set(echo)) == 1]
-
     if len(echo_chambers)>0:
         echo_chamber_size = Counter([len(chamber) for chamber in echo_chambers])
-        echo_chamber_n = len(echo_chambers)/len(cliques)
+        echo_chamber_n = len(echo_chambers)/ len(cliques)
+    else:
+        echo_chamber_n = 0
     
-    return len(large_cliques)
+    return echo_chamber_n
 
 
 
@@ -105,6 +103,7 @@ def community_no(G):
     Computes largest community
     '''
     community_partitions = get_communities(G)
+    #Communities are indexed from 0
     return max(community_partitions.values())+1
 
 def compute_silent_spiral(G):

@@ -7,9 +7,8 @@ from pylab import *
 import networkx as nx
 def visualize_network(G, layout, time, opinions):
     '''
-    Returns figure of model.
+    Returns figure of network.
     ''' 
-
     opnion_colours =[cm.Blues,cm.Reds,cm.Greens, cm.Oranges, cm.Greys, cm.Purples]
     opnions_dict = dict()
     for i in range(opinions):

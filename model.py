@@ -1,18 +1,5 @@
 """
 Create a new Opinion forming model with the given parameters.
-        Args:
-            N: Number of agents in network.
-            no_of_neighbors: Number of neighbors for each node.
-            network_type: Network type to use.
-            beta_component: if network type is small world: this is the beta-component.
-            similarity_treshold: The range in which similarity holds (difference in prefference if opinion is shared).
-            social_influence: The influence of neighboring agents on the forming of a new preference.
-            swingers: Number of agents which switches opinion, preference, and trust with each timestep.
-            malicious_N: Number of malicious agents .
-            all_majority: If true: all agents except malicious agents have the same opinion.
-            opinions: Number of opinions.
-            echo_limit: Limit for edge strenght for echo chamber calculation.
-            seed: If used: determines the number of unique networks.
 Anthony Reidy 2022
 """
 
@@ -26,21 +13,17 @@ import numpy as np
 from analysis import *
 from visualization import visualize_network
 from optparse import OptionParser
-"""
-The following STATIC hyperparameters are layed out in the foollowing manner:
-    <Variable name> = <Variable Value> # <Brief Description>  Range(<RANGE_START>, <RANGE_END>, <RANGE_STEP>)
-"""
 
 parser = OptionParser()
 parser.add_option("-n", "--num_agents", default=1000, help="Number of agents in network.")
 parser.add_option("-l","--n_neighbors",default=4, help="Number of neighbors for each node")
-parser.add_option("-t","--network_type",default=1, help="1 for small-world, 2 for scale free")
+parser.add_option("-t","--network_type",default=2, help="1 for small-world, 2 for scale free")
 parser.add_option("-b", "--beta_component", default=0.3, help='if network type is small world (1); this is the beta-component')
 parser.add_option("-s", "--similarity_treshold", default= 0.025, help='Range in which similarity holds')
 parser.add_option("-i", "--social_influence", default= 0.01 , help="The influence of neighboring agents on the forming of a new preference.")
 parser.add_option("-w", "--swingers", default=4, type=int, help='Number of agents which switches opinion, preference, and trust with each timestep.')
 parser.add_option("-v", "--malicious", default=0, help=" Number of malicious agents ")
-parser.add_option("-e", "--echo_limit", default="0.95", help="Limit for edge strength (weight) for echo chamber calculation.")
+parser.add_option("-e", "--echo_limit", default="0.7", help="Limit for edge strength (weight) for echo chamber calculation.")
 parser.add_option("-m", "--all_majority", default=False, help=" If true: all agents except malicious agents have the same opinion")
 parser.add_option("-o", "--opinions", default=2, help="Number of opinions")
 
@@ -50,7 +33,10 @@ def str_to_bool(s: str):
                 "False": False}
     
     return status[s]
-
+"""
+The following STATIC hyperparameters are layed out in the foollowing manner:
+    <Variable name> = <Variable Value> # <Brief Description>  Range(<RANGE_START>, <RANGE_END>, <RANGE_STEP>)
+"""
 num_agents = int(opts.num_agents) # Number of agents in network. Range(2, 1000, 1) 
 no_of_neighbors = int(opts.n_neighbors) # Number of neighbors for each node. Range(2, 6, 1) 
 network_type = int(opts.network_type) # Network type to use.  Range(1, 2, 1) {1:small word, 2: preferential attachment model}
@@ -234,9 +220,9 @@ def initialize_graph(N,no_of_neighbors,network_type, beta_component=None):
         beta_comopnent (float)
         '''
         if(network_type == 1):
-            return nx.watts_strogatz_graph(N, no_of_neighbors, beta_component, seed=None)
+            return nx.watts_strogatz_graph(N, no_of_neighbors, beta_component)
         elif(network_type == 2):
-            return nx.barabasi_albert_graph(N, no_of_neighbors, seed=None)
+            return nx.barabasi_albert_graph(N, no_of_neighbors)
 
 def set_malicious():
     '''
@@ -291,7 +277,8 @@ def initialize():
     global time, G, agents, malicious_agents, echo_chamber_n, echo_chamber_size, cliques,    echo_chamber_n_data,percentage_majority_opinion_data,average_trust_data,radical_opinion_data,community_no_data,silent_spiral_data,transitivity_data
     time = 0
     G = initialize_graph(num_agents,no_of_neighbors,network_type, beta_component)
-    for node, unique_num in zip(G.nodes, range(num_agents)):
+    #random activation of nodes
+    for node, unique_num in zip(random.sample(G.nodes(), num_agents), range(num_agents)):
             G.nodes[node]['agent'] = agent(unique_num)
     nx.set_edge_attributes(G, 2, 'total_encounters')
     nx.set_edge_attributes(G, 1, 'times_agreed')
@@ -326,8 +313,8 @@ def observe():
     visualize_network(G, nx.spring_layout(G, dim=2, seed=42), time, opinions)
     axis('image')
     title('t = ' + str(time))
+
     subplot(2, 2, 2)
-    plot(range(time), echo_chamber_n_data, label = 'Echo Chamber N', color="r")
     plot(range(time), community_no_data, label = 'Community N', color="b")
     title("Number of echo chambers, and communities")
     ylabel("Count")
@@ -336,17 +323,18 @@ def observe():
 
     subplot(2, 2, 3)
     plot(range(time), silent_spiral_data, label = 'Silent Spiral', color="g")
+    plot(range(time), echo_chamber_n_data, label = 'Echo Chamber N', color="y")
     plot(range(time), transitivity_data, label = 'Transitivity', color="r")
     plot(range(time), radical_opinion_data, label = 'Percentage of Radical Opinions', color="b")
-    plot(range(time), percentage_majority_opinion_data, label = 'Percentage with the majority opinion', color="y")
-    title("Silent Spiral,Transitivity and Percentage of agents with the majority opinion, and radical Opinions")
+    title("Silent Spiral, Echo chambers, Transitivity and Percentage of agents with the radical Opinions")
     xlabel("Time")
     if time == 0:
         legend()
 
     subplot(2, 2, 4)
     plot(range(time), average_trust_data, label = 'Average Trust', color="c")
-    title("Average Trust")
+    plot(range(time), percentage_majority_opinion_data, label = 'Percentage with the majority opinion', color="y")
+    title("Average Trust and Percentage of users with majority opinion")
     xlabel("Time")
     if time == 0:
         legend()
@@ -356,22 +344,21 @@ def update():
     global time, G,malicious_agents,malicious_N,  echo_chamber_n_data, echo_chamber_size_data,percentage_majority_opinion_data,average_trust_data,radical_opinion_data,community_no_data,silent_spiral_data,average_trust_data,transitivity_data
     time+=1
 
-    #Pertub Networks
-    perturb_network()
-
-    #Make all agents step
-    for a in G.nodes():
+    #Make all agents step, random activation
+    for a in random.sample(G.nodes(), num_agents):
         G.nodes()[a]["agent"].step()
+    
+    #Pertub Networks
+    #changes opinion, preference and trust for a number of swingers
+    perturb_network()
 
      # Update all malicious agents
     update_malicious_agents()
 
-    compute_echo_chamber(G, echo_limit)
+
     
     ## Gather time series statistics
-    echo_chamber_n_data.append(echo_chamber_n)
-
-
+    echo_chamber_n_data.append(compute_echo_chamber(G, echo_limit))
     community_no_data.append(community_no(G))
     radical_opinion_data.append(compute_radical_opinions(G, num_agents))
 

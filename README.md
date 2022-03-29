@@ -7,10 +7,11 @@
 </td></tr></table>
 
 ## Table of contents 
-- [Install](install)
-- [Report](report)
-- [Usage](usage)
-- [GUI explanation](GUI)
+- [Install](#install)
+- [Report](#report)
+- [Usage](#usage)
+- [GUI explanation](#gui)
+- [File explanation](#file-explanation)
 
 ## Install
 It is good practice to develop in a virtual environment. Note, this code contained in this assignment was written using `python 3.8` and on the `Ubuntu` (Linux) operating system (OS). As such, all commands are setup for this installation and may not work for other OS's. To create a virtual environment called `venv`, execute:
@@ -75,7 +76,12 @@ Options:
 The graphical user interface has four main components:
 
 1. **Network visualisation (upper left)**: The upper left panel displays the network. The colour of each node indicates it's opinion where as the strength of the color shade indicates its preference. 
-2. **Number of echo chamber and communities (upper right)**: Time series graph displaying the number of echo chambers and communities over time t.
-3. **Silent Spiral, Transitivity and percentage of agents with majority and radical opinions (bottom left)**: Time series graph displaying the number of silent spirals, Transitivity and the percentage of agents with radical opinions and the majority opinion over time t.
-4. **Average Trust (bottom right)**: Time series graph displaying the average trust throughout the network. 
+2. **Number of communities (upper right)**: Time series graph displaying  communities over time t as defined by the Louvain algorithm.
+3. **Silent Spiral, Transitivity, Echo Chambers and percentage of agents with radical opinions (bottom left)**: Time series graph displaying the number of silent spirals, Transitivity, the percentage of echo chambers over all [cliques](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.enumerate_all_cliques.html#networkx.algorithms.clique.enumerate_all_cliques) and the percentage of agents with radical opinions over time t.
+4. **Average Trust,percentage of agents with majority opinion (bottom right)**: Time series graph displaying the average trust and percentage of agents with the majority opinion throughout the network. 
+
+## File explanation
+**model.py** A python module that contains the majority of the code related to the model. It describes the initialization strategy (random activation), the update steps and the time series graphs visualisation.
+**Analysis.py** A python module that contains "compute functions" for the output parameters e.g. echo chamber count
+**Visualization.py** Code required to visualize the network. I decided to put this into a separate file given the size of the code required. 
 

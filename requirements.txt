@@ -1,0 +1,6 @@
+networkx==2.6.3
+python-louvain
+pandas 
+matplotlib
+optparse-pretty
+scipy

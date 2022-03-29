@@ -82,6 +82,8 @@ The graphical user interface has four main components:
 
 ## File explanation
 **model.py** A python module that contains the majority of the code related to the model. It describes the initialization strategy (random activation), the update steps and the time series graphs visualisation.
+
 **Analysis.py** A python module that contains "compute functions" for the output parameters e.g. echo chamber count
+
 **Visualization.py** Code required to visualize the network. I decided to put this into a separate file given the size of the code required. 
 

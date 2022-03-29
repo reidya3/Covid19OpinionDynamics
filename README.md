@@ -1,4 +1,10 @@
-# CA4024 Assignment 2
+<table align="center"><tr><td align="center" width="9999">
+<img src="images/network.png" align="center" height="300" alt="Project icon">
+
+# Investigating social phenomena prevalent in online covid-19 discourse through network-agent based modelling
+
+  Anthony Reidy
+</td></tr></table>
 
 ## Install
 It is good practice to develop in a virtual environment. Note, this code contained in this assignment was written using `python 3.8` and on the `Ubuntu` (Linux) operating system (OS). As such, all commands are setup for this installation and may not work for other OS's. To create a virtual environment called `venv`, execute:

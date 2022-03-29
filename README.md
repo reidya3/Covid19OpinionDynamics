@@ -6,6 +6,12 @@
   Anthony Reidy
 </td></tr></table>
 
+## Table of contents 
+- [Install](install)
+- [Report](report)
+- [Usage](usage)
+- [GUI explanation](GUI)
+
 ## Install
 It is good practice to develop in a virtual environment. Note, this code contained in this assignment was written using `python 3.8` and on the `Ubuntu` (Linux) operating system (OS). As such, all commands are setup for this installation and may not work for other OS's. To create a virtual environment called `venv`, execute:
 ```bash

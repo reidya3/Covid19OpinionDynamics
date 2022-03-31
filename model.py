@@ -316,7 +316,7 @@ def observe():
 
     subplot(2, 2, 2)
     plot(range(time), community_no_data, label = 'Community N', color="b")
-    title("Number of echo chambers, and communities")
+    title("Number of communities")
     ylabel("Count")
     if time == 0:
         legend()

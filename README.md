@@ -75,7 +75,7 @@ Options:
 
 The graphical user interface has four main components:
 
-1. **Network visualisation (upper left)**: The upper left panel displays the network. The colour of each node indicates it's opinion where as the strength of the color shade indicates its preference. 
+1. **Network visualisation (upper left)**: The upper left panel displays the network. The colour of each node indicates it's opinion where as the strength of the color shade indicates its preference. The strength of the edge's grey color indicates its  the trust between two agents 
 2. **Number of communities (upper right)**: Time series graph displaying  communities over time t as defined by the Louvain algorithm.
 3. **Silent Spiral, Transitivity, Echo Chambers and percentage of agents with radical opinions (bottom left)**: Time series graph displaying the number of silent spirals, Transitivity, the percentage of echo chambers over all [cliques](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.enumerate_all_cliques.html#networkx.algorithms.clique.enumerate_all_cliques) and the percentage of agents with radical opinions over time t.
 4. **Average Trust,percentage of agents with majority opinion (bottom right)**: Time series graph displaying the average trust and percentage of agents with the majority opinion throughout the network. 

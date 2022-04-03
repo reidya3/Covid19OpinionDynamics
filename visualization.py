@@ -2,7 +2,7 @@
  A python module that hosts the code required to visualize the network. 
  The color of the node maps to a specific opinion whereas as
     the strength of the colour indicates the user's belief in that opinion
-    The strength of the edge's grey color indicates its  the trust between two agents 
+    The strength of the edge's grey color indicates the trust between two agents 
 """
 from pylab import *
 import networkx as nx

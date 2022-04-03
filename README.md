@@ -73,15 +73,19 @@ Options:
 ### GUI with three opinions
 ![alt text](images/Figure-screenshot-2.png "Title Text")
 
-The graphical user interface has four main components:
+The graphical user interface has five main components:
 
-1. **Network visualisation (upper left)**: The upper left panel displays the network. The colour of each node indicates it's opinion where as the strength of the color shade indicates its preference. The strength of the edge's grey color indicates its  the trust between two agents 
-2. **Number of communities (upper right)**: Time series graph displaying  communities over time t as defined by the Louvain algorithm.
-3. **Silent Spiral, Transitivity, Echo Chambers and percentage of agents with radical opinions (bottom left)**: Time series graph displaying the number of silent spirals, Transitivity, the percentage of echo chambers over all [cliques](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.enumerate_all_cliques.html#networkx.algorithms.clique.enumerate_all_cliques) and the percentage of agents with radical opinions over time t.
-4. **Average Trust,percentage of agents with majority opinion (bottom right)**: Time series graph displaying the average trust and percentage of agents with the majority opinion throughout the network. 
+1. **Network visualisation (upper)**: The upper  panel displays the network. The colour of each node indicates it's opinion where as the strength of the color shade indicates its preference. The strength of the edge's grey color indicates  the trust between two agents In addition, the current step is displayed. 
+2. **Number of communities (upper left)**: Time series graph displaying  communities over time t as defined by the Louvain algorithm.
+3. **Silent Spiral, and percentage of agents with radical opinions (upper right)**: Time series graph displaying the number of silent spirals, and the percentage of agents with radical opinions over time t.
+4. **Average Trust, percentage of agents with majority opinion (bottom left)**: Time series graph displaying the average trust and percentage of agents with the majority opinion throughout the network. 
+5. **Echo chamber and  transitivity (bottom right)**: Time series graph displaying Transitivity, and the percentage of echo chambers over all [cliques](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.clique.enumerate_all_cliques.html#networkx.algorithms.clique.enumerate_all_cliques) through time t.
 
 ## File explanation
-**model.py** A python module that contains the majority of the code related to the model. It describes the initialization strategy (random activation), the update steps and the time series graphs visualisation.
-**Analysis.py** A python module that contains "compute functions" for the output parameters e.g. echo chamber count
-**Visualization.py** Code required to visualize the network. I decided to put this into a separate file given the size of the code required. 
+
+1. **model.py** A python module that contains the majority of the code related to the model. It describes the initialization strategy (random activation), the update steps and the time series graphs visualisation.
+
+2. **Analysis.py** A python module that contains "compute functions" for the output parameters e.g. echo chamber count
+
+3. **Visualization.py** Code required to visualize the network. I decided to put this into a separate file given the size of the code required. 
 

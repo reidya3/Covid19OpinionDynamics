@@ -305,39 +305,44 @@ def initialize():
     transitivity_data = list()
 
 
-
 def observe():
     global G,    echo_chamber_n_data,percentage_majority_opinion_data,average_trust_data,radical_opinion_data,community_no_data,silent_spiral_data,average_trust,transitivity_data
-    subplot(2, 2, 1)
+
+    subplot2grid((3, 3), (0, 0), colspan=2)
     cla()
     visualize_network(G, nx.spring_layout(G, dim=2, seed=42), time, opinions)
     axis('image')
     title('t = ' + str(time))
 
-    subplot(2, 2, 2)
+    subplot2grid((3, 3), (1, 0))
     plot(range(time), community_no_data, label = 'Community N', color="b")
     title("Number of communities")
     ylabel("Count")
-    if time == 0:
-        legend()
 
-    subplot(2, 2, 3)
+    legend()
+
+    subplot2grid((3, 3), (1, 1))
     plot(range(time), silent_spiral_data, label = 'Silent Spiral', color="g")
-    plot(range(time), echo_chamber_n_data, label = 'Echo Chamber N', color="y")
-    plot(range(time), transitivity_data, label = 'Transitivity', color="r")
     plot(range(time), radical_opinion_data, label = 'Percentage of Radical Opinions', color="b")
-    title("Silent Spiral, Echo chambers, Transitivity and Percentage of agents with the radical Opinions")
-    xlabel("Time")
-    if time == 0:
-        legend()
+    title("Silent Spiral and Percentage of agents with the radical Opinions")
 
-    subplot(2, 2, 4)
+    legend()
+
+    subplot2grid((3, 3), (2, 0))
     plot(range(time), average_trust_data, label = 'Average Trust', color="c")
     plot(range(time), percentage_majority_opinion_data, label = 'Percentage with the majority opinion', color="y")
     title("Average Trust and Percentage of users with majority opinion")
     xlabel("Time")
-    if time == 0:
-        legend()
+    
+    legend()
+    subplot2grid((3, 3), (2, 1))
+    plot(range(time), echo_chamber_n_data, label = 'Echo Chamber N', color="y")
+    plot(range(time), transitivity_data, label = 'Transitivity', color="r")
+    title("Echo chambers, and Transitivity")
+    xlabel("Time")
+
+    legend()
+
     show()
 
 def update():
@@ -355,8 +360,6 @@ def update():
      # Update all malicious agents
     update_malicious_agents()
 
-
-    
     ## Gather time series statistics
     echo_chamber_n_data.append(compute_echo_chamber(G, echo_limit))
     community_no_data.append(community_no(G))

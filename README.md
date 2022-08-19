@@ -26,7 +26,7 @@ source venv/bin/activate
 - Execute `pip3 install -r requirements.txt` to install requirements for development.
 
 ## Report
-The report for this assignment can be found [here](report.pdf).
+The report for this investigation can be found [here](report.pdf).
 
 ## Usage
 ```bash 
